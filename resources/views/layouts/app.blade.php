@@ -72,9 +72,26 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        @auth
+            <main class="py-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <ul class="list-group">
+                                @foreach ($channels as $channel)
+                                    <li class="list-group-item">{{ $channel->name }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="col-md-8">
+                            @yield('content')
+                        </div>
+                    </div>
+                </div>
+            </main>
+        @else
+
+        @endauth
     </div>
 </body>
 </html>
