@@ -88,7 +88,7 @@
                 </div>
             </main>
         @else
-
+            @yield('content')
         @endauth
     </div>
     <!-- Scripts -->
