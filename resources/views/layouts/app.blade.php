@@ -31,7 +31,22 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @auth
+                            <li class="nav-item">
+                            <a href="{{route('users.notifications')}}" class="nav-link">
+                                    <span class="badge badge-info text-white">
+                                        <div class="display-6">{{ auth()->user()->unreadNotifications->count() }}
+                                            <small> Unread Notifications</small>
+                                        </div>
+                                    </span>
+                                </a>
+                            </li>
+                        @endauth
+                        <li class="nav-item">
+                            <a href="{{ route('discussions.index')}}" class="nav-link">
+                                Discussions
+                            </a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -70,16 +85,36 @@
             </div>
         </nav>
 
-        @auth
+        @if (in_array(request()->path(), ['login', 'register', 'password/email', 'password/reset']))
+            <main class="container py-4">
+                @yield('content')
+            </main>
+        @else
             <main class="py-4">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4">
-                            <ul class="list-group">
-                                @foreach ($channels as $channel)
-                                    <li class="list-group-item">{{ $channel->name }}</li>
-                                @endforeach
-                            </ul>
+                            @auth
+                            <a href="{{route('discussions.create')}}" style="width: 100%;" class="btn btn-info my-2 text-white">Create Discussion</a>
+                            @else
+                            <a href="{{route('login')}}" style="width: 100%;" class="btn btn-info my-2 text-white">Sign in to add discussion</a>
+                            @endauth
+                            <div class="card">
+                                <div class="card-header">
+                                    channels
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        @foreach ($channels as $channel)
+                                            <li class="list-group-item">
+                                                <a href="{{ route('discussions.index')}}?channel={{$channel->slug}}">
+                                                    {{ $channel->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-8">
                             @yield('content')
@@ -87,9 +122,7 @@
                     </div>
                 </div>
             </main>
-        @else
-            @yield('content')
-        @endauth
+        @endif
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>

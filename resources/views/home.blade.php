@@ -5,9 +5,6 @@
 @endsection
 
 @section('content')
-    <div class="d-flex justify-content-end mb-2">
-        <a href="{{route('discussions.create')}}" class="btn btn-success">Add Discussions</a>
-    </div>
 
     <div class="card">
         <div class="card-header">Dashboard</div>
